@@ -1,0 +1,327 @@
+Build a complete static Flutter mobile app called
+"WorkSetu - Worker App" — a location-based workforce
+dispatch platform. This is the WORKER side only.
+
+==============================================
+TECH & GENERAL RULES
+==============================================
+
+- Framework: Flutter (Dart)
+- All data is hardcoded — NO backend, NO API calls, NO Firebase
+- Use Google Fonts — Poppins for all text
+- Use only these packages: google_fonts, smooth_page_indicator
+- All navigation must work using Flutter Navigator named routes
+- Every screen must be a separate Dart file
+- App must run on both Android and iOS
+
+==============================================
+COLOR THEME
+==============================================
+
+Primary Blue: #1A73E8
+Accent Orange: #FF6B00
+Background: #F7F8FA
+Card White: #FFFFFF
+Success Green: #34A853
+Error Red: #EA4335
+Warning Orange: #FBBC04
+Text Dark: #1A1A2E
+Text Grey: #6B7280
+Divider: #E5E7EB
+
+Typography:
+- Heading: Poppins SemiBold 20px
+- Subheading: Poppins Medium 16px
+- Body: Poppins Regular 14px
+- Caption: Poppins Regular 12px
+
+Card style: rounded corners 16px, white background,
+subtle shadow (blurRadius: 8, color: black12)
+
+==============================================
+ADDITIONAL UI RULES
+==============================================
+
+- All buttons: height 52px, borderRadius 12px
+- All input fields: borderRadius 12px, filled style grey background
+- All cards: borderRadius 16px, elevation 2
+- Status chips: small, rounded, color-coded
+- AppBar: white background, dark text, back arrow on sub-screens
+- Bottom nav: white background, Accent Orange active color
+- Empty states: centered icon + message
+- Loading states: CircularProgressIndicator in Accent Orange
+- All snackbars: rounded corners, appropriate color
+- Consistent 16px horizontal padding on all screens
+- Consistent 12px vertical spacing between elements
+
+==============================================
+APP ENTRY POINT
+==============================================
+
+File: main.dart
+Show a full screen with WorkSetu logo centered, tagline
+"Connecting Work with Trust" in grey below it.
+One large rounded button:
+"I am a Worker" — Accent Orange, navigates to Worker Splash
+
+==============================================
+WORKER APP — 13 SCREENS
+==============================================
+
+--- SCREEN 1: Worker Splash ---
+File: screens/worker_splash.dart
+- WorkSetu logo centered
+- "Worker App" badge below logo
+- Tagline: "Earn on your schedule"
+- After 2 seconds auto-navigate to Worker Login
+- Background: Accent Orange gradient to dark orange
+
+--- SCREEN 2: Worker Login ---
+File: screens/worker_login.dart
+- Title: "Worker Login"
+- Subtitle: "Login to start earning"
+- Mobile number input field (styled, rounded border)
+- "Send OTP" button (Accent Orange, full width)
+- On tap: show OTP input field with 4 boxes
+- Hardcode correct OTP as: 1234
+- On correct OTP: navigate to KYC Verification screen
+- On wrong OTP: show red snackbar "Incorrect OTP, try again"
+
+--- SCREEN 3: KYC Verification ---
+File: screens/kyc_verification.dart
+- This screen has 2 states managed by local variable
+
+State 0 — Upload Documents:
+- Title: "Complete Your KYC"
+- Subtitle: "Required to start accepting tasks"
+- 3 upload cards:
+  📄 Aadhaar Card — "Tap to upload" (grey outlined)
+  📄 PAN Card — "Tap to upload" (grey outlined)
+  🤳 Selfie — "Take selfie" (grey outlined)
+- Each card on tap: change to uploaded state
+  (show green checkmark + filename text)
+- "Submit for Verification" button (Accent Orange, full width)
+- On submit: switch to State 1
+
+State 1 — Under Review:
+- Title: "KYC Under Review"
+- Status cards for each document:
+  Aadhaar: ✅ Verified (green)
+  PAN: ✅ Verified (green)
+  Selfie: 🔄 Under Review (orange)
+- Info box: "Our team will verify within 24 hours"
+- "Continue to Dashboard" button (Accent Orange)
+- Navigates to Worker Dashboard
+
+--- SCREEN 4: Worker Dashboard ---
+File: screens/worker_dashboard.dart
+- Top bar: "Good morning, Suresh 👋" + profile icon right
+- Online/Offline toggle card (prominent, full width):
+  When Online: green background,
+    "You are ONLINE — Ready to receive tasks"
+  When Offline: grey background,
+    "You are OFFLINE — Toggle to start receiving tasks"
+  Large switch/toggle button to control state
+- Stats cards row (3 cards):
+  💰 Today's Earnings: ₹850
+  ✅ Tasks Done: 3
+  ⭐ Rating: 4.9
+- Incoming Task banner (orange, only show when Online):
+  Service: Home Cleaning
+  Locality: Model Town, Ludhiana
+  Est. Pay: ₹380
+  "View Task" button navigates to Incoming Tasks screen
+- Bottom navigation: Dashboard | Tasks | Earnings | Profile
+
+--- SCREEN 5: Online / Offline Control ---
+(Integrated inside Dashboard as a widget —
+the large toggle card controls online/offline state)
+
+--- SCREEN 6: Incoming Tasks ---
+File: screens/incoming_tasks.dart
+- Title: "Incoming Requests"
+- If worker is Offline: show empty state
+  "You are offline. Go online to receive tasks."
+- If worker is Online: show 2 task request cards:
+
+Card 1:
+  🧹 Home Cleaning
+  📍 Model Town, Ludhiana (locality only)
+  💰 Estimated Pay: ₹380
+  ⏱ Requested: 2 min ago
+  Countdown: 55 seconds remaining (static display)
+  [Accept] button (green) [Decline] button (outlined red)
+
+Card 2:
+  🚗 Car Wash
+  📍 Civil Lines, Ludhiana (locality only)
+  💰 Estimated Pay: ₹199
+  ⏱ Requested: just now
+  Countdown: 60 seconds (static display)
+  [Accept] button (green) [Decline] button (outlined red)
+
+- On Accept: navigate to Task Detail screen
+- On Decline: remove card using setState
+
+--- SCREEN 7: Task Detail ---
+File: screens/task_detail.dart
+- This screen has 2 states
+
+State 0 — Before Accept:
+- Task info card:
+  Service: Home Cleaning
+  Locality: Model Town (no exact address shown)
+  Pay: ₹380 estimated
+  Notes: "Please bring cleaning supplies"
+- "Accept Task" button (green, full width)
+- "Decline" text button below
+- On Accept: switch to State 1
+
+State 1 — After Accept:
+- Green banner: "Task Accepted ✓"
+- Full address now revealed:
+  📍 42 Green Avenue, Model Town, Ludhiana
+- Customer info card:
+  Name: Priya Sharma
+  Phone: +91 98765 12345
+  "Call Customer" button (outlined)
+- Task summary: service name, time, pay
+- "Open Navigation" button (Accent Orange, full width)
+  navigates to Navigation & Active Task screen
+
+--- SCREEN 8: Navigation & Active Task ---
+File: screens/navigation_active.dart
+- Static map placeholder (blue-grey container, 55% screen height)
+  with a pin icon and dotted route line using Container/decoration
+- Bottom sheet always visible (45% height):
+  Customer: Priya Sharma
+  Address: 42 Green Avenue, Model Town, Ludhiana
+  Distance: 2.3 km | ETA: ~12 min
+
+  Task progress buttons (one active at a time, advance on tap):
+  State 0: "I Have Arrived" button (orange, full width)
+  State 1: "Start Work" button (Primary Blue, full width)
+  State 2: "Mark as Complete" button (green, full width)
+
+  On "Mark as Complete": navigate to Completion & Payment screen
+
+--- SCREEN 9: Completion & Payment ---
+File: screens/completion_payment.dart
+- Large green checkmark icon at top
+- "Task Completed!" heading
+- Summary card:
+  Service: Home Cleaning
+  Customer: Priya Sharma
+  Duration: 1h 45min
+  Date: Today
+  ─────────────────
+  Service Amount:    ₹499
+  Your Earnings:     ₹380
+  Commission (20%):  -₹76 (shown in red)
+  Net Payable:       ₹304
+- Payment method: UPI collected
+- Status chip: "Payment Received ✓" (green)
+- "View Earnings" button navigates to Earnings & Wallet
+- "Back to Dashboard" button (outlined)
+
+--- SCREEN 10: Earnings & Wallet ---
+File: screens/earnings_wallet.dart
+- Title: "Earnings & Wallet"
+- Top balance cards (2 column):
+  Available Balance: ₹2,100 (green card)
+  On Hold (24h): ₹304 (orange card with 🔒 icon)
+- Total earnings: ₹3,200 this week
+- Info box:
+  "ℹ️ Earnings held 24 hours for dispute protection"
+- "Withdraw" button (Accent Orange, full width)
+  On tap: show bottom sheet with bank details form (UI only)
+- Transaction history (5 items):
+  1. ✅ Home Cleaning — +₹304 — Today — On Hold 🔒
+  2. ✅ Car Wash — +₹159 — Yesterday — Available
+  3. ✅ AC Repair — +₹399 — 3 May — Available
+  4. ✅ Plumbing — +₹279 — 1 May — Withdrawn
+  5. ✅ Sofa Cleaning — +₹319 — 29 Apr — Withdrawn
+
+--- SCREEN 11: Task History ---
+File: screens/task_history.dart
+- Title: "Task History"
+- Filter chips: All | Completed | Cancelled
+- List of 5 past tasks:
+  1. Home Cleaning | Priya Sharma | Today | ₹304 | Completed
+  2. Car Wash | Amit Verma | Yesterday | ₹159 | Completed
+  3. AC Repair | Sunita Devi | 3 May | ₹399 | Completed
+  4. Plumbing | Raj Kumar | 1 May | — | Cancelled
+  5. Sofa Cleaning | Meena Gupta | 29 Apr | ₹319 | Completed
+- Status chips color coded (green completed, red cancelled)
+
+--- SCREEN 12: Worker Notifications ---
+File: screens/worker_notifications.dart
+- Title: "Notifications"
+- List of 7 notifications:
+  1. 🆕 New task request — Home Cleaning nearby | 2 min ago
+  2. ✅ Task accepted — You accepted Priya's request | 5 min ago
+  3. 💰 Payment received — ₹304 credited | 2 hr ago
+  4. 🔓 Hold released — ₹159 now available | Yesterday
+  5. ⭐ New review — Priya gave you 5 stars | Yesterday
+  6. ✅ KYC Approved — Aadhaar verified | 2 days ago
+  7. 🔔 Complete your profile for more tasks | 3 days ago
+
+--- SCREEN 13: Worker Profile & Settings ---
+File: screens/worker_profile.dart
+- Top: circular avatar placeholder
+- Name: "Suresh Kumar"
+- Rating badge: ⭐ 4.9
+- Phone: +91 87654 32109
+- Status: KYC Verified ✓ (green chip)
+- Stats row: 42 Tasks | ₹12,400 Earned | Since Jan 2025
+- Settings list tiles:
+  👤 Edit Profile
+  🏦 Bank Account Details
+  📄 KYC Documents (navigates to KYC screen)
+  🔔 Notification Settings
+  ❓ Help & Support
+  📋 Terms & Privacy
+  🚪 Logout (confirmation dialog, on confirm go to entry screen)
+
+==============================================
+NAVIGATION STRUCTURE
+==============================================
+
+main.dart → worker_splash.dart → worker_login.dart
+→ kyc_verification.dart → worker_dashboard.dart (root)
+
+Bottom Nav:
+Tab 1 Dashboard → worker_dashboard.dart
+Tab 2 Tasks → task_history.dart
+Tab 3 Earnings → earnings_wallet.dart
+Tab 4 Profile → worker_profile.dart
+
+Task Flow:
+worker_dashboard → incoming_tasks → task_detail
+→ navigation_active → completion_payment → earnings_wallet
+
+==============================================
+FILE STRUCTURE
+==============================================
+
+lib/
+  main.dart
+  theme/
+    app_theme.dart (all colors and text styles)
+  screens/
+    worker_splash.dart
+    worker_login.dart
+    kyc_verification.dart
+    worker_dashboard.dart
+    incoming_tasks.dart
+    task_detail.dart
+    navigation_active.dart
+    completion_payment.dart
+    earnings_wallet.dart
+    task_history.dart
+    worker_notifications.dart
+    worker_profile.dart
+
+Generate the complete working Flutter app with all 13 screens
+fully connected. Every screen must be navigable. No errors.
+No missing imports. All files complete.
