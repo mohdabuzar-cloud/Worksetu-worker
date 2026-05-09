@@ -100,6 +100,28 @@ export default function WorkerLogin() {
           >
             Back to welcome
           </button>
+
+          <div
+            style={{
+              marginTop: 16,
+              padding: '12px 14px',
+              borderRadius: 12,
+              backgroundColor: '#F3F4F6',
+              color: C.textDark,
+            }}
+          >
+            <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6, color: C.textGrey }}>
+              Credentials
+            </div>
+            <div style={{ fontSize: 13, lineHeight: 1.5 }}>
+              <div>
+                <span style={{ fontWeight: 600 }}>Username:</span> admin
+              </div>
+              <div>
+                <span style={{ fontWeight: 600 }}>Password:</span> Password123
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
